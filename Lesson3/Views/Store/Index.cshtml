@@ -1,0 +1,120 @@
+﻿@model Lesson3.Models.ProductViewModel
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/index.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.Card').click(function () {
+                var sectionId = $(this).attr('id');
+                $.ajax({
+                    url: '/Store/GetSectionContent',
+                    type: 'GET',
+                    data: { sectionId: sectionId },
+                    success: function (data) {
+                        var myObj = data;
+                        var classId = myObj.price;
+                       // alert(classId)
+                        $("#myModal").css("display", "flex");
+                        $("#Name").val(myObj.name);
+                        $("#price").val(myObj.price);
+                        $("#img_url").val(myObj.image_Link);
+                        $("textarea").val(myObj.description);
+                        $("#Image_Mod").attr("src", myObj.image_Link);
+                    }
+                });
+            });
+            $('.Delete_btn').click( function(){
+                $.ajax({
+                    url: '/Store/Delete_Product',
+                    type: 'GET',
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <section class="modal-Body">
+                <section class="modal_Sec_1">
+                    <div class="model_Sec_1_1">
+                        <img id="Image_Mod" src="https://bazarstore.az/4218-large_default/coca-cola-sekersiz-15-lt.jpg" alt="">
+                    </div>
+                    <div class="model_Sec_1_2">
+                        <button style="margin-top:12vh; background-color:red;" class="Delete_btn">Delete</button>
+                    </div>
+                </section>
+                <section class="modal_Sec_2">
+                    <div class="form">
+                        <form asp-controller="Store" asp-action="Index" method="post">
+                            <div class="input-container ic1">
+                                <input id="Name" required minlength="2" maxlength="50" asp-for="product.Name" class="input" placeholder=" " />
+                                <div class="cut cut-short"></div>
+                                <label for="Name" asp-for="product.Name" class="placeholder">Name</label>
+                            </div>
+                            <div class="input-container ic2">
+                                <input id="price" asp-for="product.Price" type="number"  required step="0.1" min="0.1" class="input" value="0.1" placeholder="" />
+                                <div class="cut cut-short"></div>
+                                <label for="price" asp-for="product.Price" class="placeholder">Price</label>
+                            </div>
+                            <div class="input-container ic2">
+                                <input id="img_url" class="input" asp-for="product.Image_Link" pattern="https?://(?:[a-z0-9-]+\.)+[a-z]{2,}(?:/[^/#?]+)+\.(?:jpe?g|gif|png)$" placeholder=" " />
+                                <div class="cut"></div>
+                                <label for="img_url" asp-for="product.Image_Link" class="placeholder">Image URL</label>
+                            </div>
+                            <p style="color:black; margin-top:10px; margin-bottom:10px; width:100%; text-align:center;">
+                                Description
+                            </p>
+                            <textarea required minlength="6" asp-for="product.Description">
+                            </textarea>
+                            <button type="submit" class="submit">Update</button>
+                        </form>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </div>
+
+
+    <section class="head">
+        @foreach (var item in ViewBag.Products)
+        {
+            
+            <section id="@item.Id" class="Card">
+                <section class="image">
+                    <img src=@item.Image_Link alt="@item.Id">
+                </section>
+                <section class="text">
+                    <p> @item.Name </p>
+                </section>
+            </section>
+        }
+    </section>
+
+        @using (Html.BeginForm("Add_Product", "Store", FormMethod.Post))
+        {
+            <section class="footer">
+              <button class="Add_Product">
+                 <p>ADD PRODUCT</p>
+                <section class="Line"></section>
+             </button>
+            </section>
+        }
+</body>
+</html>
+

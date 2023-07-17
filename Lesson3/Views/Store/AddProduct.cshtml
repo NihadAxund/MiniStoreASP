@@ -1,0 +1,60 @@
+﻿@model Lesson3.Entities.Product
+
+@{
+    ViewData["Title"] = "AddProduct";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/index.css?v=2">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            
+        });
+    </script>
+
+    <section style="display:flex; align-items:center;justify-content:center;">
+         <div class="form" style="margin-top:10%">
+            <form asp-controller="Store" asp-action="AddProduct" method="post">
+                 <div class="input-container ic1">
+                     <input id="Name" required minlength="2" maxlength="50" asp-for="Name" class="input" placeholder=" " />
+                     <div class="cut cut-short"></div>
+                     <label for="Name" asp-for="Name" class="placeholder">Name</label>
+                 </div>
+                 <div class="input-container ic2">
+                     <input id="price" asp-for="Price" type="number" required step="0.1" min="0.1" class="input" value="0.1" placeholder="" />
+                     <div class="cut cut-short"></div>
+                     <label for="price" asp-for="Price" class="placeholder">Price</label>
+                 </div>
+                 <div class="input-container ic2">
+                     <input id="img_url" class="input" asp-for="Image_Link" pattern="https?://(?:[a-z0-9-]+\.)+[a-z]{2,}(?:/[^/#?]+)+\.(?:jpe?g|gif|png)$" placeholder=" " />
+                     <div class="cut"></div>
+                     <label for="img_url" asp-for="Image_Link" class="placeholder">Image URL</label>
+                 </div>
+                 <p style="color:black; margin-top:10px; margin-bottom:10px; width:100%; text-align:center;">
+                     Description
+                 </p>
+                <textarea required minlength="6" asp-for="Description">
+                 </textarea>
+                 <button type="submit" class="submit">ADD</button>
+             </form>
+         </div>
+    </section>
+
+
+</body>
+
+</html>
+
+
+
